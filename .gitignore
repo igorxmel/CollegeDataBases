@@ -1,0 +1,26 @@
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# PyInstaller build leftovers (dist/ is kept, the built exe is part of the deliverable)
+build/
+*.spec
+
+# OS and editor junk
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Office lock files
+~$*
+
+# Temporary files
+*.tmp
+*.log
