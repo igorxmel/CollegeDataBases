@@ -1,0 +1,51 @@
+# Поднимает MySQL 8 и Adminer для практических работ курса.
+#
+#   docker compose up -d      поднять
+#   docker compose down       остановить, база останется
+#   docker compose down -v    остановить и стереть базу, чтобы пересобрать с нуля
+#
+# После запуска Adminer доступен на http://localhost:8080
+# Сервер: db, пользователь: root, пароль: root
+#
+# Скрипты из initdb выполняются один раз, при первом создании тома. Чтобы
+# перечитать их после правок, нужен `docker compose down -v`.
+#
+# Новая работа добавляется одной строкой в volumes ниже. Имя внутри контейнера
+# задаёт порядок выполнения, поэтому оно начинается с номера.
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: college_db_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - "./Task 5th MySQL Create and Modify/Solution/5.1_create.sql:/docker-entrypoint-initdb.d/05-1-create.sql:ro"
+      - "./Task 5th MySQL Create and Modify/Solution/5.2_modify.sql:/docker-entrypoint-initdb.d/05-2-modify.sql:ro"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  adminer:
+    image: adminer:latest
+    container_name: college_db_adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
