@@ -29,6 +29,7 @@ services:
       - mysql_data:/var/lib/mysql
       - "./Task 5th MySQL Create and Modify/Solution/5.1_create.sql:/docker-entrypoint-initdb.d/05-1-create.sql:ro"
       - "./Task 5th MySQL Create and Modify/Solution/5.2_modify.sql:/docker-entrypoint-initdb.d/05-2-modify.sql:ro"
+      - "./Task 6th Cascade Operations and Referential Integrity/Solution/6_biblioteka.sql:/docker-entrypoint-initdb.d/06-biblioteka.sql:ro"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
       interval: 5s
