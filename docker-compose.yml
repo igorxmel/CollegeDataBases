@@ -30,6 +30,10 @@ services:
       - "./Task 5th MySQL Create and Modify/Solution/5.1_create.sql:/docker-entrypoint-initdb.d/05-1-create.sql:ro"
       - "./Task 5th MySQL Create and Modify/Solution/5.2_modify.sql:/docker-entrypoint-initdb.d/05-2-modify.sql:ro"
       - "./Task 6th Cascade Operations and Referential Integrity/Solution/6_biblioteka.sql:/docker-entrypoint-initdb.d/06-biblioteka.sql:ro"
+      - "./Task 7th SELECT Queries and Views/Solution/7.1_select.sql:/docker-entrypoint-initdb.d/07-1-select.sql:ro"
+      - "./Task 7th SELECT Queries and Views/Solution/7.2_group.sql:/docker-entrypoint-initdb.d/07-2-group.sql:ro"
+      - "./Task 7th SELECT Queries and Views/Solution/7.3_join.sql:/docker-entrypoint-initdb.d/07-3-join.sql:ro"
+      - "./Task 7th SELECT Queries and Views/Solution/7.4_union.sql:/docker-entrypoint-initdb.d/07-4-union.sql:ro"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
       interval: 5s
