@@ -4,6 +4,13 @@
 .claude/build/
 .claude/settings.local.json
 
+# Результаты экспорта из MySQL. INTO OUTFILE не перезаписывает существующий файл,
+# и закоммиченные выгрузки сделали бы повторный запуск ошибкой 1086. Готовые
+# копии лежат в Solution нужных работ, а входные файлы импорта в exchange
+# остаются под контролем версий.
+exchange/zakazy.csv
+exchange/zakazchiki_yur.txt
+
 # Python
 __pycache__/
 *.py[cod]
