@@ -1,0 +1,18 @@
+:: Практическая работа № 18. Резервное копирование и восстановление базы данных
+:: Команды для консоли Open Server Panel (cmd), выполнять из папки, куда сохраняются копии.
+:: На запрос пароля вводится пароль root (в Open Server Panel он по умолчанию пустой,
+:: тогда достаточно нажать Enter).
+:: Архивация идёт через gzip, подробный вывод ключа -v остаётся на экране.
+:: 1. Резервная копия базы в обычном формате (вместе с процедурами).
+mysqldump -h 127.0.0.1 -u root -p --routines torgash_Холкин > dump_Холкин.sql
+:: 2. Резервная копия в архивном формате с подробным выводом.
+mysqldump -v -h 127.0.0.1 -u root -p --routines torgash_Холкин | gzip > dump_arh_Холкин.sql.gz
+:: 3. Резервная копия таблицы «Заказы».
+mysqldump -v -h 127.0.0.1 -u root -p torgash_Холкин orders | gzip > dump_orders_Холкин.sql.gz
+:: 4. Резервная копия прав доступа: учётные записи и права на базу и таблицы.
+mysqldump -v -h 127.0.0.1 -u root -p mysql user db tables_priv | gzip > dump_privileges_Холкин.sql.gz
+:: 5. Резервная копия без таблицы «Вид собственности».
+mysqldump -v -h 127.0.0.1 -u root -p --routines --ignore-table=torgash_Холкин.vids torgash_Холкин | gzip > dump_not_vids_Холкин.sql.gz
+:: 6. Восстановление: новая база и загрузка в неё обычной копии.
+mysql --default-character-set=utf8mb4 -h 127.0.0.1 -u root -p -e "CREATE DATABASE torgash_Холкин_copy CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+mysql --default-character-set=utf8mb4 -h 127.0.0.1 -u root -p torgash_Холкин_copy < dump_Холкин.sql
