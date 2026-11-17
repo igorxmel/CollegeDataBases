@@ -40,8 +40,16 @@ services:
       - "./Task 7th SELECT Queries and Views/Solution/7.4_union.sql:/docker-entrypoint-initdb.d/07-4-union.sql:ro"
       # Экспорт из восьмой и девятой работ сюда не подключён: INTO OUTFILE не
       # перезаписывает файл, поэтому он запускается руками из вкладки SQL.
-      - "./Task 9th Data Import and Export/Solution/9.1_import.sql:/docker-entrypoint-initdb.d/09-1-import.sql:ro"
+      # Скрипт импорта написан под Open Server Panel (пути c:/ospanel/...), в контейнере
+      # путь подменяет docker/run_import.sh, сам файл работы остаётся как есть.
+      - "./Task 9th Data Import and Export/Solution/9.1_import.sql:/scripts/9.1_import.sql:ro"
+      - "./docker/run_import.sh:/docker-entrypoint-initdb.d/09-1-import.sh:ro"
       - "./Task 10th Self Join/Solution/10_selfjoin.sql:/docker-entrypoint-initdb.d/10-selfjoin.sql:ro"
+      - "./Task 11th Window Functions/Solution/11_window.sql:/docker-entrypoint-initdb.d/11-window.sql:ro"
+      - "./Task 12th Stored Procedures/Solution/12_procedures.sql:/docker-entrypoint-initdb.d/12-procedures.sql:ro"
+      - "./Task 13th Triggers/Solution/13_triggers.sql:/docker-entrypoint-initdb.d/13-triggers.sql:ro"
+      - "./Task 14th Generators/Solution/14_generators.sql:/docker-entrypoint-initdb.d/14-generators.sql:ro"
+      - "./Task 17th User Privileges/Solution/17_privileges.sql:/docker-entrypoint-initdb.d/17-privileges.sql:ro"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
       interval: 5s

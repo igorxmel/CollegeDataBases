@@ -2,7 +2,7 @@
 -- (for example Open Server Panel + phpMyAdmin).
 -- Run it on the SQL tab. Change only the path in the first line.
 
-SET @path = 'C:/temp/postavki.csv';
+SET @path = 'c:/ospanel/userdata/temp/upload/postavki.csv';
 
 -- 1. Server version (MySQL or MariaDB).
 SELECT VERSION() AS server_version;

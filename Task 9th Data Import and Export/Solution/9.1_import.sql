@@ -1,25 +1,7 @@
--- ---------------------------------------------------------------------------
--- Практическая работа № 9, импорт данных (пункты 1 и 2 задания)
--- База torgash_Холкин из практической работы № 5, СУБД MySQL 8.0
---
--- Исходные файлы лежат в папке exchange рядом с docker-compose.yml. Сервер видит
--- её как /var/lib/mysql-files, это каталог secure_file_priv.
---   postavki.xlsx -> postavki.csv   «Сохранить как» CSV из Excel
---   vozvraty.txt                    «Сохранить как» текст с табуляцией из Excel
---
--- Русский Excel пишет файлы в cp1251, даты как ДД.ММ.ГГГГ и десятичные дроби
--- через запятую. MySQL так не читает: дата падает с ошибкой 1292, дробь с ошибкой
--- 1366. Поэтому значения принимаются в переменные и приводятся в разделе SET.
---
--- Скрипт можно запускать повторно: таблицы пересоздаются.
--- ---------------------------------------------------------------------------
-
 SET NAMES utf8mb4;
 USE torgash_Холкин;
 
--- 1. Импорт из .xlsx. Таблица поставок на склад, 6 столбцов: ключ, дата,
--- два символьных, целое и дробное. Ключ в файле отсутствует, его проставляет
--- AUTO_INCREMENT.
+-- 1. Импорт из .xlsx (через CSV). Таблица поставок на склад.
 DROP TABLE IF EXISTS postavki;
 CREATE TABLE postavki (
     id_p              INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +12,7 @@ CREATE TABLE postavki (
     zakupochnaya_cena DECIMAL(10,2) NOT NULL
 );
 
-LOAD DATA INFILE '/var/lib/mysql-files/postavki.csv'
+LOAD DATA INFILE 'c:/ospanel/userdata/temp/upload/postavki.csv'
 INTO TABLE postavki
 CHARACTER SET cp1251
 FIELDS TERMINATED BY ';'
@@ -43,7 +25,7 @@ SET data_postavki     = STR_TO_DATE(@data, '%d.%m.%Y'),
 
 SELECT * FROM postavki;
 
--- 2. Импорт из .txt. Таблица возвратов, 6 столбцов того же состава.
+-- 2. Импорт из .txt. Таблица возвратов.
 DROP TABLE IF EXISTS vozvraty;
 CREATE TABLE vozvraty (
     id_v           INT AUTO_INCREMENT PRIMARY KEY,
@@ -54,7 +36,7 @@ CREATE TABLE vozvraty (
     summa_vozvrata DECIMAL(10,2) NOT NULL
 );
 
-LOAD DATA INFILE '/var/lib/mysql-files/vozvraty.txt'
+LOAD DATA INFILE 'c:/ospanel/userdata/temp/upload/vozvraty.txt'
 INTO TABLE vozvraty
 CHARACTER SET cp1251
 FIELDS TERMINATED BY '\t'
@@ -65,3 +47,4 @@ SET data_vozvrata  = STR_TO_DATE(@data, '%d.%m.%Y'),
     summa_vozvrata = REPLACE(@summa, ',', '.');
 
 SELECT * FROM vozvraty;
+
